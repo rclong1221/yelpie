@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>CptS415 - Milestone 1</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <div class="container bg-dark px-4 py-2">
+      <!-- Selectable by default -->
+      <div class="dropdown">
+        <button class="btn btn-dark dropdown-toggle" type="button" id="state" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Select a state
+        </button>
+        <div class="dropdown-menu scrollable-menu" id="sddm" aria-labelledby="state">
+        </div>
+      </div>
+      <!-- Can select after state is chosen -->
+      <div class="dropdown">
+        <button class="btn btn-dark dropdown-toggle" type="button" id="city" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
+          Select a city
+        </button>
+        <div class="dropdown-menu scrollable-menu" id="cddm" aria-labelledby="city">
+        </div>
+      </div>
+      <table class="table table-dark">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Restaurant name</th>
+            <th scope="col">City</th>
+            <th scope="col">State</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+    <script src="{{ url_for('static', filename='jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <script type="text/javascript">
+      var ustates;
+      var ucities;
+      var data = [];
+      for (var i = 0; i < 100; i++) {
+        data.push({
+          'business': 'business' + i,
+          'city': 'city' + i,
+          'state': 'state' + i
+        });
+      }
+
+      var state = null;
+      var city = null;
+      var business = null;
+
+      <!-- On load, load states and fill states dropdown -->
+      $(document).ready(function () {
+        $.ajax({
+          url: '/api/v1.0/states/',
+          success: function (data, status) {
+            s = "";
+            for (var i = 0; i < data.states.length; i++) {
+              s = s + `
+                <a class="dropdown-item" href="#" onclick="onStateClick('${data.states[i]}')">${data.states[i]}</a>
+              `;
+            }
+            $('#sddm').html(s);
+          }
+        });
+      });
+
+      function onStateClick(e) {
+        state = e;
+        $('#city').prop('disabled', false);
+        $('#state').text(e);
+
+        <!-- Send to endpoint -->
+        $.ajax({
+          url: `/api/v1.0/cities/${state}/`,
+          success: function (data, status) {
+            c = "";
+            for (var i = 0; i < data.cities.length; i++) {
+              c = c + `
+                <a class="dropdown-item" href="#" onclick="onCityClick('${data.cities[i]}')">${data.cities[i]}</a>
+              `;
+            }
+            $('#cddm').html(c);
+            $('#city').text("Select a city");
+          }
+        });
+      }
+
+      function onCityClick(e) {
+        city = e;
+        $('#city').text(e);
+
+        <!-- Send to endpoint -->
+        $.ajax({
+          url: `/api/v1.0/businesses/${state}/${city}/`,
+          success: function (data, status) {
+            <!-- Use response to populate TABLE -->
+            d = "";
+            for (var i = 0; i < data.businesses.length; i++){
+              d = d + `
+                <tr>
+                  <th scope="row">${i+1}</th>
+                  <td>${data.businesses[i]}</td>
+                  <td>${city}</td>
+                  <td>${state}</td>
+                </tr>
+              `;
+            }
+            $('tbody').html(d);
+          }
+        });
+
+      }
+    </script>
+  </body>
+</html>

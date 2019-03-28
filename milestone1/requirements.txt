@@ -1,0 +1,25 @@
+# packages in environment at C:\Users\bolleh\AppData\Local\conda\conda\envs\milestone1:
+#
+# Name                    Version                   Build  Channel
+ca-certificates           2018.12.5                     0  
+certifi                   2018.11.29               py37_0  
+click                     7.0                      py37_0  
+flask                     1.0.2                    py37_1  
+itsdangerous              1.1.0                    py37_0  
+jinja2                    2.10                     py37_0  
+krb5                      1.16.1               hc04afaa_7  
+libpq                     11.1                 h3235a2c_0  
+markupsafe                1.1.0            py37he774522_0  
+openssl                   1.1.1a               he774522_0  
+pip                       18.1                     py37_0  
+psycopg2                  2.7.6.1          py37h7a1dbc1_0  
+python                    3.7.2                h8c8aaf0_0  
+setuptools                40.6.3                   py37_0  
+sqlite                    3.26.0               he774522_0  
+tk                        8.6.8                hfa6e2cd_0  
+vc                        14.1                 h0510ff6_4  
+vs2015_runtime            14.15.26706          h3a45250_0  
+werkzeug                  0.14.1                   py37_0  
+wheel                     0.32.3                   py37_0  
+wincertstore              0.2                      py37_0  
+zlib                      1.2.11               h62dcd97_3  

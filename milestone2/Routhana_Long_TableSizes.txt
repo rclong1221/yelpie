@@ -1,0 +1,5 @@
+Census - 32634
+Business - 11481
+Users (because User is a key word) - 192999
+Review - 416479
+CheckIn - 481360
