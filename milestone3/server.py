@@ -39,16 +39,44 @@ def read_cities(state):
     c = cursor.fetchall()
     return jsonify({'cities': c})
 
-@app.route('/api/v1.0/businesses/<string:state>/<string:city>/')
-def read_businesses(state, city):
+@app.route('/api/v1.0/zips/<string:state>/<string:city>/')
+def read_zips(state, city):
     q = '''
-        SELECT name
+        SELECT DISTINCT zip
         FROM Business
-        WHERE city='%s' AND state='%s';
+        WHERE city='%s' AND state='%s'
+        ORDER BY zip;
     ''' % (city, state)
     cursor.execute(q)
     b = cursor.fetchall()
+    print(b)
+    return jsonify({'zips': b})
+
+@app.route('/api/v1.0/businesses/<string:state>/<string:city>/<string:zip>')
+def read_businesses(state, city, zip):
+    q = '''
+        SELECT name
+        FROM Business
+        WHERE city='%s' AND state='%s' AND zip='%s';
+    ''' % (city, state, zip)
+    cursor.execute(q)
+    b = cursor.fetchall()
     return jsonify({'businesses': b})
+
+@app.route('/api/v1.0/stats/<string:state>/<string:city>/<string:zip>')
+def read_stats(state, city, zip):
+    q = '''
+        SELECT
+          COUNT(business_id) AS total_businesses,
+          CAST(AVG(population) AS INTEGER) AS population,
+          CAST(AVG(mean_income) AS INTEGER) AS income
+        FROM Census
+        JOIN Business ON Census.zip=Business.zip
+        WHERE Business.city='%s' AND Business.state='%s' AND Census.zip='%s';
+    ''' % (city, state, zip)
+    cursor.execute(q)
+    b = cursor.fetchall()
+    return jsonify({'stats': b})
 
 @app.route('/js/<path:path>/')
 def get_js(path):

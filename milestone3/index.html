@@ -25,6 +25,14 @@
         <div class="dropdown-menu scrollable-menu" id="cddm" aria-labelledby="city">
         </div>
       </div>
+      <!-- Can select after city is chosen -->
+      <div class="dropdown">
+        <button class="btn btn-dark dropdown-toggle" type="button" id="zip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
+          Select a zip
+        </button>
+        <div class="dropdown-menu scrollable-menu" id="zddm" aria-labelledby="zip">
+        </div>
+      </div>
       <table class="table table-dark">
         <thead>
           <tr>
@@ -96,25 +104,57 @@
 
       function onCityClick(e) {
         city = e;
+        $('#zip').prop('disabled', false);
         $('#city').text(e);
 
         <!-- Send to endpoint -->
         $.ajax({
-          url: `/api/v1.0/businesses/${state}/${city}/`,
+          url: `/api/v1.0/zips/${state}/${city}/`,
+          success: function (data, status) {
+            c = "";
+            for (var i = 0; i < data.zips.length; i++) {
+              c = c + `
+                <a class="dropdown-item" href="#" onclick="onZipClick('${data.zips[i][0]}')">${data.zips[i][0]}</a>
+              `;
+            }
+            $('#zddm').html(c);
+            $('#zip').text("Select a zip");
+          }
+        });
+      }
+
+      function onZipClick(e) {
+        zip = e;
+        $('#zip').text(e);
+
+        // <!-- Send to endpoint -->
+        // $.ajax({
+        //   url: `/api/v1.0/businesses/${state}/${city}/${zip}`,
+        //   success: function (data, status) {
+        //     <!-- Use response to populate TABLE -->
+        //     d = "";
+        //     for (var i = 0; i < data.businesses.length; i++){
+        //       d = d + `
+        //         <tr>
+        //           <th scope="row">${i+1}</th>
+        //           <td>${data.businesses[i]}</td>
+        //           <td>${city}</td>
+        //           <td>${state}</td>
+        //           <td>${zip}</td>
+        //         </tr>
+        //       `;
+        //     }
+        //     $('tbody').html(d);
+        //   }
+        // });
+
+        <!-- Send to endpoint -->
+        $.ajax({
+          url: `/api/v1.0/stats/${state}/${city}/${zip}`,
           success: function (data, status) {
             <!-- Use response to populate TABLE -->
             d = "";
-            for (var i = 0; i < data.businesses.length; i++){
-              d = d + `
-                <tr>
-                  <th scope="row">${i+1}</th>
-                  <td>${data.businesses[i]}</td>
-                  <td>${city}</td>
-                  <td>${state}</td>
-                </tr>
-              `;
-            }
-            $('tbody').html(d);
+            console.log(data)
           }
         });
 
