@@ -78,6 +78,43 @@
         <tbody id="b-table">
         </tbody>
       </table>
+      <button type="button" class="btn btn-primary" onclick="onRefreshClick()">Refresh</button>
+      <table class="table table-dark">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Stars</th>
+            <th scope="col">Reviews</th>
+            <th scope="col">Rating</th>
+            <th scope="col">Price</th>
+          </tr>
+        </thead>
+        <tbody id="expensive">
+        </tbody>
+      </table>
+      <table class="table table-dark">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Stars</th>
+            <th scope="col">Rating</th>
+            <th scope="col">Reviews</th>
+          </tr>
+        </thead>
+        <tbody id="popular">
+        </tbody>
+      </table>
+      <table class="table table-dark">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Reviews</th>
+            <th scope="col">Checkins</th>
+          </tr>
+        </thead>
+        <tbody id="successful">
+        </tbody>
+      </table>
     </div>
     <script src="{{ url_for('static', filename='jquery-3.3.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='popper.min.js') }}"></script>
@@ -290,6 +327,72 @@
             $('#b-table').html(d);
           }
         });
+      }
+
+      function onRefreshClick() {
+        <!-- Send to endpoint -->
+        $.ajax({
+          url: `/api/v1.0/expensive/${state}/${city}/${zip}`,
+          success: function (data, status) {
+            <!-- Use response to populate TABLE -->
+            d = "";
+            for (var i = 0; i < data.expensive.length; i++){
+              td = "";
+              for (var j = 0; j < data.expensive[i].length; j++){
+                td = td + `<td>${data.expensive[i][j]}</td>`;
+              }
+              d = d + `
+                <tr>
+                  ${td}
+                </tr>
+              `;
+            }
+            $('#expensive').html(d);
+
+            <!-- Send to endpoint -->
+            $.ajax({
+              url: `/api/v1.0/popular/${state}/${city}/${zip}`,
+              success: function (data, status) {
+                <!-- Use response to populate TABLE -->
+                d = "";
+                for (var i = 0; i < data.popular.length; i++){
+                  td = "";
+                  for (var j = 0; j < data.popular[i].length; j++){
+                    td = td + `<td>${data.popular[i][j]}</td>`;
+                  }
+                  d = d + `
+                    <tr>
+                      ${td}
+                    </tr>
+                  `;
+                }
+                $('#popular').html(d);
+
+                <!-- Send to endpoint -->
+                $.ajax({
+                  url: `/api/v1.0/successful/${state}/${city}/${zip}`,
+                  success: function (data, status) {
+                    <!-- Use response to populate TABLE -->
+                    d = "";
+                    for (var i = 0; i < data.successful.length; i++){
+                      td = "";
+                      for (var j = 0; j < data.successful[i].length; j++){
+                        td = td + `<td>${data.successful[i][j]}</td>`;
+                      }
+                      d = d + `
+                        <tr>
+                          ${td}
+                        </tr>
+                      `;
+                    }
+                    $('#successful').html(d);
+                  }
+                });
+              }
+            });
+          }
+        });
+
       }
     </script>
   </body>
