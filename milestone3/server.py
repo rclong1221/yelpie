@@ -64,7 +64,8 @@ def read_businesses(state, city, zip):
           CAST(ROUND(avg_rating::NUMERIC, 2) AS FLOAT),
           num_checkins
         FROM Business
-        WHERE city='%s' AND state='%s' AND zip='%s';
+        WHERE city='%s' AND state='%s' AND zip='%s'
+        ORDER BY name;
     ''' % (city, state, zip)
     cursor.execute(q)
     b = cursor.fetchall()
@@ -84,7 +85,8 @@ def read_filtered_businesses(state, city, zip, categories):
           num_checkins
         FROM Business
         JOIN HasTypes ON Business.business_id=HasTypes.business_id
-        WHERE city='%s' AND state='%s' AND zip='%s' AND category_name IN (%s);
+        WHERE city='%s' AND state='%s' AND zip='%s' AND category_name IN (%s)
+        ORDER BY name;
     ''' % (city, state, zip, cats)
     cursor.execute(q)
     b = cursor.fetchall()
@@ -96,7 +98,8 @@ def read_categories(state, city, zip):
         SELECT DISTINCT category_name
         FROM Business
         JOIN HasTypes ON Business.business_id=HasTypes.business_id
-        WHERE city='%s' AND state='%s' AND zip='%s';
+        WHERE city='%s' AND state='%s' AND zip='%s'
+        ORDER BY category_name;
     ''' % (city, state, zip)
     cursor.execute(q)
     b = cursor.fetchall()
@@ -126,7 +129,8 @@ def read_cat_stats(state, city, zip):
         FROM Business
         JOIN HasTypes ON Business.business_id=HasTypes.business_id
         WHERE city='%s' AND state='%s' AND zip='%s'
-        GROUP BY category_name;
+        GROUP BY category_name
+        ORDER BY category_name;
     ''' % (city, state, zip)
     cursor.execute(q)
     b = cursor.fetchall()
