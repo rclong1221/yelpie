@@ -55,7 +55,7 @@ def read_zips(state, city):
 @app.route('/api/v1.0/businesses/<string:state>/<string:city>/<string:zip>')
 def read_businesses(state, city, zip):
     q = '''
-        SELECT
+        SELECT DISTINCT
           name,
           address,
           city,
@@ -69,6 +69,38 @@ def read_businesses(state, city, zip):
     cursor.execute(q)
     b = cursor.fetchall()
     return jsonify({'businesses': b})
+
+@app.route('/api/v1.0/filtered-businesses/<string:state>/<string:city>/<string:zip>/<string:categories>')
+def read_filtered_businesses(state, city, zip, categories):
+    cats = "'" + categories.replace("&", "', '") + "'"
+    q = '''
+        SELECT DISTINCT
+          name,
+          address,
+          city,
+          CAST(ROUND(stars::NUMERIC, 2) AS FLOAT),
+          CAST(ROUND(review_count::NUMERIC, 2) AS FLOAT),
+          CAST(ROUND(avg_rating::NUMERIC, 2) AS FLOAT),
+          num_checkins
+        FROM Business
+        JOIN HasTypes ON Business.business_id=HasTypes.business_id
+        WHERE city='%s' AND state='%s' AND zip='%s' AND category_name IN (%s);
+    ''' % (city, state, zip, cats)
+    cursor.execute(q)
+    b = cursor.fetchall()
+    return jsonify({'businesses': b})
+
+@app.route('/api/v1.0/categories/<string:state>/<string:city>/<string:zip>')
+def read_categories(state, city, zip):
+    q = '''
+        SELECT DISTINCT category_name
+        FROM Business
+        JOIN HasTypes ON Business.business_id=HasTypes.business_id
+        WHERE city='%s' AND state='%s' AND zip='%s';
+    ''' % (city, state, zip)
+    cursor.execute(q)
+    b = cursor.fetchall()
+    return jsonify({'categories': b})
 
 @app.route('/api/v1.0/stats/<string:state>/<string:city>/<string:zip>')
 def read_stats(state, city, zip):

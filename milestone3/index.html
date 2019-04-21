@@ -33,7 +33,7 @@
         <div class="dropdown-menu scrollable-menu" id="zddm" aria-labelledby="zip">
         </div>
       </div>
-      <div class="stats">
+      <div class="stats text-light bg-dark">
         <div class="b-container">
           <span>Number of businesses: <span id="b-count"></span></span>
         </div>
@@ -44,6 +44,14 @@
           <span>Average income: <span id="income"></span></span>
         </div>
       </div>
+      <div class="form-group text-light bg-dark">
+        <label for="sel-cat">Select category</label>
+        <select multiple class="form-control text-light bg-dark" id="sel-cat" disabled>
+          <option>Empty</option>
+        </select>
+      </div>
+      <button type="button" class="btn btn-primary" onclick="onFilterClick()">Filter</button>
+      <button type="button" class="btn btn-warning" onclick="onClearClick()">Clear</button>
       <table class="table table-dark">
         <thead>
           <tr>
@@ -166,17 +174,96 @@
             $.ajax({
               url: `/api/v1.0/stats/${state}/${city}/${zip}`,
               success: function (d, s) {
-                <!-- Use response to populate TABLE -->
                 $('#b-count').html(d.stats[0][0]);
                 $('#population').html(d.stats[0][1]);
                 $('#income').html(d.stats[0][2]);
+
+                <!-- Send to endpoint -->
+                $.ajax({
+                  url: `/api/v1.0/categories/${state}/${city}/${zip}`,
+                  success: function (c, s) {
+                    s = "";
+                    for (var i = 0; i < c.categories.length; i++) {
+                      s = s + `
+                        <option>${c.categories[i][0]}</option>
+                      `;
+                    }
+                    $('#sel-cat').html(s);
+                    $('#sel-cat').prop('disabled', false);
+                  }
+                });
               }
             });
+
+
           }
         });
 
 
 
+      }
+
+      function onFilterClick() {
+        var selections = $("#sel-cat").val();
+        sels = "";
+        for (var s = 0; s < selections.length; s++) {
+          sels = sels + selections[s] + "&";
+        }
+        sels = sels.substring(0, sels.length - 1);
+
+        u = "";
+        if (sels.length > 0)
+          u = `/api/v1.0/filtered-businesses/${state}/${city}/${zip}/${sels}`;
+        else
+          u = `/api/v1.0/businesses/${state}/${city}/${zip}`;
+
+        <!-- Send to endpoint -->
+        $.ajax({
+          url: u,
+          success: function (data, status) {
+            <!-- Use response to populate TABLE -->
+            d = "";
+            for (var i = 0; i < data.businesses.length; i++){
+              td = "";
+              for (var j = 0; j < data.businesses[i].length; j++){
+                td = td + `<td>${data.businesses[i][j]}</td>`;
+              }
+              d = d + `
+                <tr>
+                  <th scope="row">${i+1}</th>
+                  ${td}
+                </tr>
+              `;
+            }
+            $('tbody').html(d);
+          }
+        });
+      }
+
+      function onClearClick() {
+        $("#sel-cat").val([]);
+
+        <!-- Send to endpoint -->
+        $.ajax({
+          url: `/api/v1.0/businesses/${state}/${city}/${zip}`,
+          success: function (data, status) {
+            <!-- Use response to populate TABLE -->
+            d = "";
+            for (var i = 0; i < data.businesses.length; i++){
+              td = "";
+              for (var j = 0; j < data.businesses[i].length; j++){
+                td = td + `<td>${data.businesses[i][j]}</td>`;
+              }
+              d = d + `
+                <tr>
+                  <th scope="row">${i+1}</th>
+                  ${td}
+                </tr>
+              `;
+            }
+            $('tbody').html(d);
+          }
+        });
       }
     </script>
   </body>
