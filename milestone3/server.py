@@ -117,6 +117,21 @@ def read_stats(state, city, zip):
     b = cursor.fetchall()
     return jsonify({'stats': b})
 
+@app.route('/api/v1.0/cat-stats/<string:state>/<string:city>/<string:zip>')
+def read_cat_stats(state, city, zip):
+    q = '''
+        SELECT
+          COUNT(HasTypes.business_id) AS total_businesses,
+          category_name
+        FROM Business
+        JOIN HasTypes ON Business.business_id=HasTypes.business_id
+        WHERE city='%s' AND state='%s' AND zip='%s'
+        GROUP BY category_name;
+    ''' % (city, state, zip)
+    cursor.execute(q)
+    b = cursor.fetchall()
+    return jsonify({'stats': b})
+
 @app.route('/js/<path:path>/')
 def get_js(path):
     print(path)
