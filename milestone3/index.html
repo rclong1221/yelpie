@@ -78,18 +78,18 @@
             </div>
             <div class="row">
               <div class="col-12">
-                <select multiple class="form-control text-light bg-dark" id="sel-cat" disabled>
+                <select multiple class="form-control text-light bg-dark" id="sel-cat" onclick="onCatClick()" disabled>
                   <option>Empty</option>
                 </select>
               </div>
               <div class="col-12">
                 <div class="row">
                   <div class="col-12">
-                    <button type="button" class="btn btn-primary pull-right" onclick="onFilterClick()">
-                      <span class="fa fa-filter fa-lg aria-hidden="true"></span>
+                    <button type="button" class="btn btn-primary pull-right" onclick="onFilterClick()" id="filter-btn" disabled>
+                      <span class="fa fa-filter fa-lg" aria-hidden="true"></span>
                     </button>
-                    <button type="button" class="btn btn-warning pull-right" onclick="onClearClick()">
-                      <span class="fa fa-remove fa-lg aria-hidden="true"></span>
+                    <button type="button" class="btn btn-warning pull-right" onclick="onClearClick()" id="clear-btn" disabled>
+                      <span class="fa fa-remove fa-lg" aria-hidden="true"></span>
                     </button>
                   </div>
                 </div>
@@ -124,8 +124,8 @@
 
       <div class="row vh-33">
         <div class="col-1">
-          <button type="button" class="btn btn-primary" onclick="onRefreshClick()">
-            <span class="fa fa-refresh fa-lg aria-hidden="true"></span>
+          <button type="button" class="btn btn-primary" onclick="onRefreshClick()" id="refresh-btn" disabled>
+            <span class="fa fa-refresh fa-lg" aria-hidden="true"></span>
           </button>
         </div>
         <div class="col-4">
@@ -313,6 +313,8 @@
                           `;
                         }
                         $('#c-table').html(d);
+
+                        $('#refresh-btn').prop('disabled', false);
                       }
                     });
                   }
@@ -321,6 +323,10 @@
             });
           }
         });
+      }
+
+      function onCatClick() {
+        $('#filter-btn').prop('disabled', false);
       }
 
       function onFilterClick() {
@@ -356,6 +362,9 @@
               `;
             }
             $('#b-table').html(d);
+
+            $('#filter-btn').prop('disabled', true);
+            $('#clear-btn').prop('disabled', false);
           }
         });
       }
@@ -382,6 +391,9 @@
               `;
             }
             $('#b-table').html(d);
+
+            $('#filter-btn').prop('disabled', true);
+            $('#clear-btn').prop('disabled', true);
           }
         });
       }
