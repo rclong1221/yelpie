@@ -8,113 +8,156 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   </head>
   <body>
-    <div class="container bg-dark px-4 py-2">
-      <!-- Selectable by default -->
-      <div class="dropdown">
-        <button class="btn btn-dark dropdown-toggle" type="button" id="state" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Select a state
-        </button>
-        <div class="dropdown-menu scrollable-menu" id="sddm" aria-labelledby="state">
+    <div class="container-fluid bg-dark px-4 py-2 min-vh-100">
+      <div class="row vh-33">
+        <div class="col-lg-3 location-container">
+          <!-- Selectable by default -->
+          <div class="dropdown">
+            <button class="btn btn-dark dropdown-toggle" type="button" id="state" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Select a state
+            </button>
+            <div class="dropdown-menu scrollable-menu" id="sddm" aria-labelledby="state">
+            </div>
+          </div>
+          <!-- Can select after state is chosen -->
+          <div class="dropdown">
+            <button class="btn btn-dark dropdown-toggle" type="button" id="city" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
+              Select a city
+            </button>
+            <div class="dropdown-menu scrollable-menu" id="cddm" aria-labelledby="city">
+            </div>
+          </div>
+          <!-- Can select after city is chosen -->
+          <div class="dropdown">
+            <button class="btn btn-dark dropdown-toggle" type="button" id="zip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
+              Select a zip
+            </button>
+            <div class="dropdown-menu scrollable-menu" id="zddm" aria-labelledby="zip">
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 stats-container">
+          <div class="stats text-light bg-dark">
+            <div class="b-container">
+              <span>Number of businesses: <span id="b-count"></span></span>
+            </div>
+            <div class="p-container">
+              <span>Population: <span id="population"></span></span>
+            </div>
+            <div class="i-container">
+              <span>Average income: <span id="income"></span></span>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 stats-table-container">
+          <table class="table table-dark">
+            <thead>
+              <tr>
+                <th scope="col"># of businesses</th>
+                <th scope="col">Category</th>
+              </tr>
+            </thead>
+            <tbody id="c-table">
+            </tbody>
+          </table>
         </div>
       </div>
-      <!-- Can select after state is chosen -->
-      <div class="dropdown">
-        <button class="btn btn-dark dropdown-toggle" type="button" id="city" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
-          Select a city
-        </button>
-        <div class="dropdown-menu scrollable-menu" id="cddm" aria-labelledby="city">
+
+      <div class="row vh-33">
+        <div class="col-lg-3 cat-container">
+          <div class="form-group text-light bg-dark">
+            <div class="row">
+              <div class="col-12">
+                <label for="sel-cat">Select Category</label>
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-10">
+                <select multiple class="form-control text-light bg-dark" id="sel-cat" disabled>
+                  <option>Empty</option>
+                </select>
+              </div>
+              <div class="col-2">
+                <div class="row">
+                  <div class="col-12">
+                    <button type="button" class="btn btn-primary" onclick="onFilterClick()">Filter</button>
+                  </div>
+                  <div class="col-12">
+                    <button type="button" class="btn btn-warning" onclick="onClearClick()">Clear</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-9 b-table-container">
+          <table class="table table-dark">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Address</th>
+              <th scope="col">City</th>
+              <th scope="col">Stars</th>
+              <th scope="col">Reviews</th>
+              <th scope="col">Rating</th>
+              <th scope="col">Checkins</th>
+            </tr>
+          </thead>
+          <tbody id="b-table">
+          </tbody>
+        </table>
         </div>
       </div>
-      <!-- Can select after city is chosen -->
-      <div class="dropdown">
-        <button class="btn btn-dark dropdown-toggle" type="button" id="zip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
-          Select a zip
-        </button>
-        <div class="dropdown-menu scrollable-menu" id="zddm" aria-labelledby="zip">
+
+      <div class="row vh-33">
+        <div class="col-lg-1">
+          <button type="button" class="btn btn-primary" onclick="onRefreshClick()">Refresh</button>
+        </div>
+        <div class="col-lg-4">
+          <table class="table table-dark">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Stars</th>
+                <th scope="col">Reviews</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Price</th>
+              </tr>
+            </thead>
+            <tbody id="expensive">
+            </tbody>
+          </table>
+        </div>
+        <div class="col-lg-4">
+          <table class="table table-dark">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Stars</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Reviews</th>
+              </tr>
+            </thead>
+            <tbody id="popular">
+            </tbody>
+          </table>
+        </div>
+        <div class="col-lg-3">
+          <table class="table table-dark">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Reviews</th>
+                <th scope="col">Checkins</th>
+              </tr>
+            </thead>
+            <tbody id="successful">
+            </tbody>
+          </table>
         </div>
       </div>
-      <div class="stats text-light bg-dark">
-        <div class="b-container">
-          <span>Number of businesses: <span id="b-count"></span></span>
-        </div>
-        <div class="p-container">
-          <span>Population: <span id="population"></span></span>
-        </div>
-        <div class="i-container">
-          <span>Average income: <span id="income"></span></span>
-        </div>
-      </div>
-      <div class="form-group text-light bg-dark">
-        <label for="sel-cat">Select category</label>
-        <select multiple class="form-control text-light bg-dark" id="sel-cat" disabled>
-          <option>Empty</option>
-        </select>
-      </div>
-      <button type="button" class="btn btn-primary" onclick="onFilterClick()">Filter</button>
-      <button type="button" class="btn btn-warning" onclick="onClearClick()">Clear</button>
-      <table class="table table-dark">
-        <thead>
-          <tr>
-            <th scope="col"># of businesses</th>
-            <th scope="col">Category</th>
-          </tr>
-        </thead>
-        <tbody id="c-table">
-        </tbody>
-      </table>
-      <table class="table table-dark">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Address</th>
-            <th scope="col">City</th>
-            <th scope="col">Stars</th>
-            <th scope="col">Reviews</th>
-            <th scope="col">Rating</th>
-            <th scope="col">Checkins</th>
-          </tr>
-        </thead>
-        <tbody id="b-table">
-        </tbody>
-      </table>
-      <button type="button" class="btn btn-primary" onclick="onRefreshClick()">Refresh</button>
-      <table class="table table-dark">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Stars</th>
-            <th scope="col">Reviews</th>
-            <th scope="col">Rating</th>
-            <th scope="col">Price</th>
-          </tr>
-        </thead>
-        <tbody id="expensive">
-        </tbody>
-      </table>
-      <table class="table table-dark">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Stars</th>
-            <th scope="col">Rating</th>
-            <th scope="col">Reviews</th>
-          </tr>
-        </thead>
-        <tbody id="popular">
-        </tbody>
-      </table>
-      <table class="table table-dark">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Reviews</th>
-            <th scope="col">Checkins</th>
-          </tr>
-        </thead>
-        <tbody id="successful">
-        </tbody>
-      </table>
+
     </div>
     <script src="{{ url_for('static', filename='jquery-3.3.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='popper.min.js') }}"></script>
