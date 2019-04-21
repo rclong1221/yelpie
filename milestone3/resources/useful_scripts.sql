@@ -29,3 +29,7 @@ SELECT COUNT(*) FROM CheckIn;
   JOIN HasTypes ON Business.business_id=HasTypes.business_id
 ) AS BTypes
 WHERE Business.business_id=
+
+
+CREATE INDEX idx_zip_city_state
+ON Business(zip, city, state);
