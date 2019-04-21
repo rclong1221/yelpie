@@ -33,13 +33,28 @@
         <div class="dropdown-menu scrollable-menu" id="zddm" aria-labelledby="zip">
         </div>
       </div>
+      <div class="stats">
+        <div class="b-container">
+          <span>Number of businesses: <span id="b-count"></span></span>
+        </div>
+        <div class="p-container">
+          <span>Population: <span id="population"></span></span>
+        </div>
+        <div class="i-container">
+          <span>Average income: <span id="income"></span></span>
+        </div>
+      </div>
       <table class="table table-dark">
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Restaurant name</th>
+            <th scope="col">Name</th>
+            <th scope="col">Address</th>
             <th scope="col">City</th>
-            <th scope="col">State</th>
+            <th scope="col">Stars</th>
+            <th scope="col">Reviews</th>
+            <th scope="col">Rating</th>
+            <th scope="col">Checkins</th>
           </tr>
         </thead>
         <tbody>
@@ -127,36 +142,40 @@
         zip = e;
         $('#zip').text(e);
 
-        // <!-- Send to endpoint -->
-        // $.ajax({
-        //   url: `/api/v1.0/businesses/${state}/${city}/${zip}`,
-        //   success: function (data, status) {
-        //     <!-- Use response to populate TABLE -->
-        //     d = "";
-        //     for (var i = 0; i < data.businesses.length; i++){
-        //       d = d + `
-        //         <tr>
-        //           <th scope="row">${i+1}</th>
-        //           <td>${data.businesses[i]}</td>
-        //           <td>${city}</td>
-        //           <td>${state}</td>
-        //           <td>${zip}</td>
-        //         </tr>
-        //       `;
-        //     }
-        //     $('tbody').html(d);
-        //   }
-        // });
-
         <!-- Send to endpoint -->
         $.ajax({
-          url: `/api/v1.0/stats/${state}/${city}/${zip}`,
+          url: `/api/v1.0/businesses/${state}/${city}/${zip}`,
           success: function (data, status) {
             <!-- Use response to populate TABLE -->
             d = "";
-            console.log(data)
+            for (var i = 0; i < data.businesses.length; i++){
+              td = "";
+              for (var j = 0; j < data.businesses[i].length; j++){
+                td = td + `<td>${data.businesses[i][j]}</td>`;
+              }
+              d = d + `
+                <tr>
+                  <th scope="row">${i+1}</th>
+                  ${td}
+                </tr>
+              `;
+            }
+            $('tbody').html(d);
+
+            <!-- Send to endpoint -->
+            $.ajax({
+              url: `/api/v1.0/stats/${state}/${city}/${zip}`,
+              success: function (d, s) {
+                <!-- Use response to populate TABLE -->
+                $('#b-count').html(d.stats[0][0]);
+                $('#population').html(d.stats[0][1]);
+                $('#income').html(d.stats[0][2]);
+              }
+            });
           }
         });
+
+
 
       }
     </script>

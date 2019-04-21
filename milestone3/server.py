@@ -55,7 +55,14 @@ def read_zips(state, city):
 @app.route('/api/v1.0/businesses/<string:state>/<string:city>/<string:zip>')
 def read_businesses(state, city, zip):
     q = '''
-        SELECT name
+        SELECT
+          name,
+          address,
+          city,
+          CAST(ROUND(stars::NUMERIC, 2) AS FLOAT),
+          CAST(ROUND(review_count::NUMERIC, 2) AS FLOAT),
+          CAST(ROUND(avg_rating::NUMERIC, 2) AS FLOAT),
+          num_checkins
         FROM Business
         WHERE city='%s' AND state='%s' AND zip='%s';
     ''' % (city, state, zip)
