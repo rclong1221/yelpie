@@ -333,9 +333,9 @@
         var selections = $("#sel-cat").val();
         sels = "";
         for (var s = 0; s < selections.length; s++) {
-          sels = sels + selections[s] + "&";
+          sels = sels + encodeURIComponent(encodeURIComponent(selections[s])) + "&A&";
         }
-        sels = sels.substring(0, sels.length - 1);
+        sels = sels.substring(0, sels.length - 3);
 
         u = "";
         if (sels.length > 0)

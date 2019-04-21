@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, render_template, request
+from urllib.parse import unquote
 import psycopg2
 app = Flask(__name__, template_folder='.', static_url_path='')
 
@@ -73,7 +74,8 @@ def read_businesses(state, city, zip):
 
 @app.route('/api/v1.0/filtered-businesses/<string:state>/<string:city>/<string:zip>/<string:categories>')
 def read_filtered_businesses(state, city, zip, categories):
-    cats = "'" + categories.replace("&", "', '") + "'"
+    c = unquote(categories)
+    cats = "'" + c.replace("&A&", "', '") + "'"
     q = '''
         SELECT DISTINCT
           name,
