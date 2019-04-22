@@ -3,7 +3,7 @@ from urllib.parse import unquote
 import psycopg2
 app = Flask(__name__, template_folder='.', static_url_path='')
 
-CREDENTIALS = "dbname='yelpdb' user='postgres' host='localhost' port='5433' password='y33lilboy'"
+CREDENTIALS = "dbname='yelpdb' user='postgres' host='localhost' port='5433' password='password'"
 
 try:
     conn = psycopg2.connect(CREDENTIALS)

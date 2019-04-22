@@ -1,4 +1,4 @@
-# CPTS451 Project - Milestone 2
+# CPTS451 Project - Milestone 3
 
 ## Option 1: Updates via UPDATE (assigned)
 Extract data to root directory of project
