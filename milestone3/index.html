@@ -1,71 +1,90 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html>
   <head>
     <meta charset="utf-8">
-    <title>CptS415 - Milestone 3</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>CptS451 - Milestone 3</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='sidebar-style.css') }}">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <style>
+      .vh-25 {
+        height: 25vh;
+      }
+      .vh-33 {
+        height: 33vh;
+      }
+      .vh-40 {
+        height: 40vh;
+      }
+      .vh-50 {
+        height: 50vh;
+      }
+      .overflow {
+        overflow: auto;
+      }
+    </style>
   </head>
   <body>
-    <div class="container-fluid bg-dark px-4 py-2 min-vh-100">
-      <div class="row">
-        <div class="col-2 location-container">
-          <div class="stats text-light bg-dark">
-            <h4>Zip Code Stats</h4>
-            <div class="b-container">
-              <span>Number of Businesses: <span id="b-count"></span></span>
+    <div class="wrapper">
+      <nav class="px-2" id="sidebar">
+        <div class="sidebar-header">
+          <h3>CptS 415</h3>
+          <h4>Milestone 3</h4>
+        </div>
+        <ul class="list-unstyled components">
+          <h4><i class="fa fa-calculator"></i> Zip Code Stats</h4>
+          <li> Number of Businesses: <span id="b-count"></span></li>
+          <li> Population: <span id="population"></span></li>
+          <li> Average income: <span id="income"></span></li>
+        </ul>
+        <ul class="list-unstyled components">
+          <div>
+              <h4><i class="fa fa-map-marker"></i> Location</h4>
+              <!-- Selectable by default -->
+              <div class="dropdown">
+                <button class="btn btn-block btn-outline-light dropdown-toggle" type="button" id="state" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Select a state
+                </button>
+                <div class="dropdown-menu scrollable-menu" id="sddm" aria-labelledby="state">
+                </div>
+              </div>
+              <!-- Can select after state is chosen -->
+              <div class="dropdown">
+                <button class="btn btn-block btn-outline-light dropdown-toggle" type="button" id="city" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
+                  Select a city
+                </button>
+                <div class="dropdown-menu scrollable-menu" id="cddm" aria-labelledby="city">
+                </div>
+              </div>
+              <!-- Can select after city is chosen -->
+              <div class="dropdown">
+                <button class="btn btn-block btn-outline-light dropdown-toggle" type="button" id="zip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
+                  Select a zip
+                </button>
+                <div class="dropdown-menu scrollable-menu" id="zddm" aria-labelledby="zip">
+                </div>
+              </div>
             </div>
-            <div class="p-container">
-              <span>Population: <span id="population"></span></span>
-            </div>
-            <div class="i-container">
-              <span>Average income: <span id="income"></span></span>
-            </div>
-          </div>
-
-          <!-- Selectable by default -->
-          <div class="dropdown">
-            <button class="btn btn-outline-light btn-block btn-dark dropdown-toggle" type="button" id="state" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Select a state
-            </button>
-            <div class="dropdown-menu scrollable-menu" id="sddm" aria-labelledby="state">
-            </div>
-          </div>
-          <!-- Can select after state is chosen -->
-          <div class="dropdown">
-            <button class="btn btn-outline-light btn-block btn-dark dropdown-toggle" type="button" id="city" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
-              Select a city
-            </button>
-            <div class="dropdown-menu scrollable-menu" id="cddm" aria-labelledby="city">
-            </div>
-          </div>
-          <!-- Can select after city is chosen -->
-          <div class="dropdown">
-            <button class="btn btn-outline-light btn-block btn-dark dropdown-toggle" type="button" id="zip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
-              Select a zip
-            </button>
-            <div class="dropdown-menu scrollable-menu" id="zddm" aria-labelledby="zip">
-            </div>
-          </div>
-
+        </ul>
+        <ul class="list-unstyled components">
           <div class="cat-container">
-            <div class="form-group text-light bg-dark">
+            <div class="form-group text-light">
               <div class="row">
                 <div class="col-12">
-                  <label for="sel-cat">Categories</label>
+                  <h4 for="sel-cat"><i class="fa fa-adjust"></i> Categories</h4>
                 </div>
               </div>
               <div class="row">
                 <div class="col-12">
-                  <select multiple class="form-control text-light bg-dark" id="sel-cat" onclick="onCatClick()" disabled>
+                  <select multiple class="form-control" id="sel-cat" onclick="onCatClick()" disabled>
                     <option>Empty</option>
                   </select>
                 </div>
                 <div class="col-12">
-                  <div class="row">
-                    <div class="col-12">
+                  <div class="row mt-2">
+                    <div class="col-12 mr-1">
                       <button type="button" class="btn btn-primary pull-right" onclick="onFilterClick()" id="filter-btn" disabled>
                         <span class="fa fa-filter fa-lg" aria-hidden="true"></span>
                       </button>
@@ -78,107 +97,155 @@
               </div>
             </div>
           </div>
-          <div class="">
-            <button type="button" class="btn btn-primary pull-right" onclick="onRefreshClick()" id="refresh-btn" disabled>
-              <span class="fa fa-refresh fa-lg" aria-hidden="true"></span>
-            </button>
+        </ul>
+        <h4><i class="fa fa-download"></i> "Refresh"</h4>
+        <div class="">
+          <button type="button" class="btn btn-primary pull-right" onclick="onRefreshClick()" id="refresh-btn" disabled>
+            <span class="fa fa-refresh fa-lg" aria-hidden="true"></span>
+          </button>
+        </div>
+      </nav>
+      <div id="content">
+        <div class="container-fluid px-4 py-2 min-vh-100">
+          <div class="row">
+            <div class="col-12 stats-container">
+              <div class="row">
+                <div class="col-7"></div>
+                <div class="col-5 stats-table-container vh-25 overflow">
+                  <label><h4><i class="fa fa-folder-open"></i> Category Stats</h4></label>
+                  <table class="table table-hover table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">Number of Businesses</th>
+                        <th scope="col">Category</th>
+                      </tr>
+                    </thead>
+                    <tbody id="c-table">
+                      <tr><td></td><td></td></tr>
+                      <tr><td></td><td></td></tr>
+                      <tr><td></td><td></td></tr>
+                      <tr><td></td><td></td></tr>
+                      <tr><td></td><td></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="row my-5">
+                <div class="col-12">
+                  <label><h4><i class="fa fa-building"></i> Businesses</h4></label>
+                </div>
+                <div class="col-12 b-table-container vh-50 overflow">
+                  <table class="table table-hover table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">City</th>
+                        <th scope="col">Stars</th>
+                        <th scope="col">Reviews</th>
+                        <th scope="col">Rating</th>
+                        <th scope="col">Checkins</th>
+                      </tr>
+                    </thead>
+                    <tbody id="b-table">
+                      <tr><th scope="row"></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                      <tr><th scope="row"></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                      <tr><th scope="row"></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                      <tr><th scope="row"></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                      <tr><th scope="row"></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                      <tr><th scope="row"></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                      <tr><th scope="row"></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                      <tr><th scope="row"></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                      <tr><th scope="row"></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                      <tr><th scope="row"></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-5 f-tables-container">
+                  <label><h4><i class="fa fa-money-bill"></i> Expensive Businesses</h4></label>
+                  <div class="vh-25 overflow">
+                    <table class="table table-hover table-bordered">
+                      <thead>
+                        <tr>
+                          <th scope="col">Name</th>
+                          <th scope="col">Stars</th>
+                          <th scope="col">Reviews</th>
+                          <th scope="col">Rating</th>
+                          <th scope="col">Price</th>
+                        </tr>
+                      </thead>
+                      <tbody id="expensive">
+                        <tr><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td></td><td></td><td></td><td></td><td></td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <label><h4><i class="fa fa-fire"></i> Popular Businesses</h4></label>
+                  <div class="vh-25 overflow">
+                    <table class="table table-hover table-bordered">
+                      <thead>
+                        <tr>
+                          <th scope="col">Name</th>
+                          <th scope="col">Stars</th>
+                          <th scope="col">Rating</th>
+                          <th scope="col">Reviews</th>
+                        </tr>
+                      </thead>
+                      <tbody id="popular">
+                        <tr><td></td><td></td><td></td><td></td></tr>
+                        <tr><td></td><td></td><td></td><td></td></tr>
+                        <tr><td></td><td></td><td></td><td></td></tr>
+                        <tr><td></td><td></td><td></td><td></td></tr>
+                        <tr><td></td><td></td><td></td><td></td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <label><h4><i class="fa fa-check-square"></i> Successful Businesses</h4></label>
+                  <div class="vh-25 overflow">
+                    <table class="table table-hover table-bordered">
+                      <thead>
+                        <tr>
+                          <th scope="col">Name</th>
+                          <th scope="col">Reviews</th>
+                          <th scope="col">Checkins</th>
+                        </tr>
+                      </thead>
+                      <tbody id="successful">
+                        <tr><td></td><td></td><td></td></tr>
+                        <tr><td></td><td></td><td></td></tr>
+                        <tr><td></td><td></td><td></td></tr>
+                        <tr><td></td><td></td><td></td></tr>
+                        <tr><td></td><td></td><td></td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="col-10 stats-container">
-          <div class="row">
-            <div class="col-7">
-
-            </div>
-            <div class="col-5 stats-table-container">
-              <table class="table table-dark table-hover table-bordered">
-                <thead>
-                  <tr>
-                    <th scope="col">Number of Businesses</th>
-                    <th scope="col">Category</th>
-                  </tr>
-                </thead>
-                <tbody id="c-table">
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-12 text-light bg-dark">
-              <label for="sel-cat">Businesses</label>
-            </div>
-            <div class="col-12 b-table-container">
-              <table class="table table-dark table-hover table-bordered">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Address</th>
-                    <th scope="col">City</th>
-                    <th scope="col">Stars</th>
-                    <th scope="col">Reviews</th>
-                    <th scope="col">Rating</th>
-                    <th scope="col">Checkins</th>
-                  </tr>
-                </thead>
-                <tbody id="b-table"></tbody>
-              </table>
-            </div>
-          </div>
-
-          <div class="row">
-
-            <div class="col-5">
-              <table class="table table-dark table-hover table-bordered">
-                <thead>
-                  <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Stars</th>
-                    <th scope="col">Reviews</th>
-                    <th scope="col">Rating</th>
-                    <th scope="col">Price</th>
-                  </tr>
-                </thead>
-                <tbody id="expensive">
-                </tbody>
-              </table>
-            </div>
-            <div class="col-4">
-              <table class="table table-dark table-hover table-bordered">
-                <thead>
-                  <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Stars</th>
-                    <th scope="col">Rating</th>
-                    <th scope="col">Reviews</th>
-                  </tr>
-                </thead>
-                <tbody id="popular">
-                </tbody>
-              </table>
-            </div>
-            <div class="col-3">
-              <table class="table table-dark table-hover table-bordered">
-                <thead>
-                  <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Reviews</th>
-                    <th scope="col">Checkins</th>
-                  </tr>
-                </thead>
-                <tbody id="successful">
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
       </div>
-
     </div>
     <script src="{{ url_for('static', filename='jquery-3.3.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='popper.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
+    </script>
     <script type="text/javascript">
       var ustates;
       var ucities;
@@ -197,6 +264,10 @@
 
       <!-- On load, load states and fill states dropdown -->
       $(document).ready(function () {
+        $('#sidebarCollapse').on('click', function () {
+          $('#sidebar').toggleClass('active');
+        });
+
         $.ajax({
           url: '/api/v1.0/states/',
           success: function (data, status) {
@@ -467,5 +538,6 @@
 
       }
     </script>
-  </body>
+</body>
+
 </html>
