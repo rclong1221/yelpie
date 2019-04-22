@@ -12,6 +12,19 @@
     <div class="container-fluid bg-dark px-4 py-2 min-vh-100">
       <div class="row">
         <div class="col-2 location-container">
+          <div class="stats text-light bg-dark">
+            <h4>Zip Code Stats</h4>
+            <div class="b-container">
+              <span>Number of Businesses: <span id="b-count"></span></span>
+            </div>
+            <div class="p-container">
+              <span>Population: <span id="population"></span></span>
+            </div>
+            <div class="i-container">
+              <span>Average income: <span id="income"></span></span>
+            </div>
+          </div>
+
           <!-- Selectable by default -->
           <div class="dropdown">
             <button class="btn btn-outline-light btn-block btn-dark dropdown-toggle" type="button" id="state" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -74,17 +87,7 @@
         <div class="col-10 stats-container">
           <div class="row">
             <div class="col-7">
-              <div class="stats text-light bg-dark">
-                <div class="b-container">
-                  <span>Number of Businesses: <span id="b-count"></span></span>
-                </div>
-                <div class="p-container">
-                  <span>Population: <span id="population"></span></span>
-                </div>
-                <div class="i-container">
-                  <span>Average income: <span id="income"></span></span>
-                </div>
-              </div>
+
             </div>
             <div class="col-5 stats-table-container">
               <table class="table table-dark table-hover table-bordered">
