@@ -11,10 +11,10 @@
   <body>
     <div class="container-fluid bg-dark px-4 py-2 min-vh-100">
       <div class="row vh-33">
-        <div class="col-3 location-container">
+        <div class="col-2 location-container">
           <!-- Selectable by default -->
           <div class="dropdown">
-            <button class="btn btn-dark dropdown-toggle" type="button" id="state" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-outline-light btn-block btn-dark dropdown-toggle" type="button" id="state" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Select a state
             </button>
             <div class="dropdown-menu scrollable-menu" id="sddm" aria-labelledby="state">
@@ -22,7 +22,7 @@
           </div>
           <!-- Can select after state is chosen -->
           <div class="dropdown">
-            <button class="btn btn-dark dropdown-toggle" type="button" id="city" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
+            <button class="btn btn-outline-light btn-block btn-dark dropdown-toggle" type="button" id="city" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
               Select a city
             </button>
             <div class="dropdown-menu scrollable-menu" id="cddm" aria-labelledby="city">
@@ -30,14 +30,14 @@
           </div>
           <!-- Can select after city is chosen -->
           <div class="dropdown">
-            <button class="btn btn-dark dropdown-toggle" type="button" id="zip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
+            <button class="btn btn-outline-light btn-block btn-dark dropdown-toggle" type="button" id="zip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
               Select a zip
             </button>
             <div class="dropdown-menu scrollable-menu" id="zddm" aria-labelledby="zip">
             </div>
           </div>
         </div>
-        <div class="col-3 stats-container">
+        <div class="col-4 stats-container">
           <div class="row">
             <div class="col-12">
               <div class="stats text-light bg-dark">
@@ -55,7 +55,7 @@
           </div>
         </div>
         <div class="col-6 stats-table-container">
-          <table class="table table-dark">
+          <table class="table table-dark table-hover table-bordered">
             <thead>
               <tr>
                 <th scope="col">Number of Businesses</th>
@@ -73,7 +73,7 @@
           <div class="form-group text-light bg-dark">
             <div class="row">
               <div class="col-12">
-                <label for="sel-cat">Select Category</label>
+                <label for="sel-cat">Categories</label>
                 </div>
             </div>
             <div class="row">
@@ -102,7 +102,7 @@
             <div class="col-12">
               <label for="sel-cat">Businesses</label>
             </div>
-            <table class="col-12 table table-dark">
+            <table class="col-12 table table-dark table-hover table-bordered">
               <thead>
                 <tr>
                   <th scope="col">#</th>
@@ -129,7 +129,7 @@
           </button>
         </div>
         <div class="col-4">
-          <table class="table table-dark">
+          <table class="table table-dark table-hover table-bordered">
             <thead>
               <tr>
                 <th scope="col">Name</th>
@@ -144,7 +144,7 @@
           </table>
         </div>
         <div class="col-4">
-          <table class="table table-dark">
+          <table class="table table-dark table-hover table-bordered">
             <thead>
               <tr>
                 <th scope="col">Name</th>
@@ -158,7 +158,7 @@
           </table>
         </div>
         <div class="col-3">
-          <table class="table table-dark">
+          <table class="table table-dark table-hover table-bordered">
             <thead>
               <tr>
                 <th scope="col">Name</th>
