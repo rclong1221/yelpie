@@ -14,7 +14,7 @@ RouthanaLong_relations_v1.sql is of the SQL statements.
 
 ## Exercise 3: Simple database app (web)
 
-### Install dependencies 
+### Install dependencies
 pip install flask
 pip install psycopg2
 
@@ -38,8 +38,9 @@ http://127.0.0.1:5000/
 5) Update database connection at global variable "CREDENTIALS = ..."
 6) Populate DB with "python parseAndInsert"
 7) Run statements from Routhana_Long_UPDATES.sql
-8) Run web server with "python server.py"
-9) To view app, navigate to "http://127.0.0.1:5000/"
+8) Run statements from Routhana_Long_INDEX.sql to create index
+9) Run web server with "python server.py"
+10) To view app, navigate to "http://127.0.0.1:5000/"
 
 ## Option 2: Updates via TRIGGERS
 ### Extract data to root directory of project
@@ -50,9 +51,9 @@ http://127.0.0.1:5000/
 5) Install dependencies with "pip install flask psycopg2"
 6) Update database connection at global variable "CREDENTIALS = ..."
 7) Populate DB with "python parseAndInsert"
-8) Run web server with "python server.py"
-9) To view app, navigate to "http://127.0.0.1:5000/"
+8) Run statements from Routhana_Long_INDEX.sql to create index
+9) Run web server with "python server.py"
+10) To view app, navigate to "http://127.0.0.1:5000/"
 
 ## Writeup
 Code in the writeup requires one of the above options be completed.
-
