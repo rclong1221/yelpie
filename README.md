@@ -1,6 +1,6 @@
 # yelpie
 
-# CPTS451 Project - Milestone 2
+# CPTS451 Project - Milestone 1
 
 ## Exercise 1: Parser
 Code of CptS451_Online_parseJSON.py which was downloaded and used with files
